@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+
+@variant dark (&:where(.dark, .dark *));
+@variant high-contrast (&:where(.high-contrast, .high-contrast *));
+
+@layer base {
+  :root {
+    color-scheme: light dark;
+  }
+
+  body {
+    @apply high-contrast:bg-white high-contrast:text-black bg-stone-50 text-slate-800 antialiased transition-colors duration-200 dark:bg-stone-900 dark:text-slate-200;
+    overflow-x: clip;
+  }
+
+  /* Standard form focus styles */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    @apply high-contrast:ring-black high-contrast:ring-2 ring-teal-500;
+  }
+
+  /* Hide default number input arrows for a more modern look */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  /* Custom Checkbox Styling */
+  input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    height: 1rem;
+    width: 1rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    border: 1px solid #d6d3d1; /* stone-300 */
+    background-color: #ffffff;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .dark input[type='checkbox'] {
+    border-color: #44403b; /* stone-600 */
+    background-color: #1c1917; /* stone-900 */
+  }
+
+  .high-contrast input[type='checkbox'] {
+    border-color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+
+  input[type='checkbox']:checked {
+    background-color: #24978f; /* brand teal */
+    border-color: #24978f;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .high-contrast input[type='checkbox']:checked {
+    background-color: #000000 !important;
+    border-color: #000000 !important;
+  }
+
+  input[type='checkbox']:focus {
+    outline: none;
+    box-shadow:
+      0 0 0 2px #fff,
+      0 0 0 4px #24978f;
+  }
+
+  .dark input[type='checkbox']:focus {
+    box-shadow:
+      0 0 0 2px #1c1917,
+      0 0 0 4px #24978f;
+  }
+
+  .high-contrast input[type='checkbox']:focus {
+    box-shadow:
+      0 0 0 2px #ffffff !important,
+      0 0 0 4px #000000 !important;
+  }
+}
+
+@layer utilities {
+  .fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .fade-out {
+    animation: fadeOut 0.2s ease-in;
+  }
+
+  .slide-in-from-left {
+    animation: slideInFromLeft 0.2s ease-out;
+  }
+
+  .slide-in-from-right {
+    animation: slideInFromRight 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes slideInFromLeft {
+    from {
+      transform: translateX(-10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInFromRight {
+    from {
+      transform: translateX(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
+@layer components {
+  /* High contrast core overrides */
+  .high-contrast {
+    background-color: white !important;
+    color: black !important;
+    --hc-bg: white;
+    --hc-fg: black;
+  }
+
+  /* Aggressive global reset for colors and styles */
+  .high-contrast *:not(svg):not(path) {
+    background-color: var(--hc-bg) !important;
+    color: var(--hc-fg) !important;
+    border-color: var(--hc-fg) !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    background-image: none !important;
+    --tw-ring-width: 0px !important;
+    opacity: 1 !important;
+  }
+
+  /* Clean 1px borders only where appropriate */
+  .high-contrast .border,
+  .high-contrast .border-t,
+  .high-contrast .border-b,
+  .high-contrast .border-l,
+  .high-contrast .border-r,
+  .high-contrast button,
+  .high-contrast input,
+  .high-contrast select,
+  .high-contrast textarea,
+  .high-contrast .rounded-xl,
+  .high-contrast .rounded-2xl,
+  .high-contrast .rounded-3xl,
+  .high-contrast table,
+  .high-contrast td,
+  .high-contrast th,
+  .high-contrast hr {
+    border-width: 1px !important;
+    border-style: solid !important;
+  }
+
+  /* Interactive Elements - Inverted mode (Black BG, White Text) */
+  .high-contrast button:hover,
+  .high-contrast button:focus,
+  .high-contrast .active,
+  .high-contrast [aria-selected='true'],
+  .high-contrast .bg-black,
+  .high-contrast .bg-stone-800,
+  .high-contrast .dark\:bg-stone-800,
+  .high-contrast .bg-teal-800,
+  .high-contrast .bg-teal-600,
+  .high-contrast .bg-teal-500 {
+    --hc-bg: black !important;
+    --hc-fg: white !important;
+  }
+
+  /* Tooltips & Visibility Logic */
+  /* Keep hidden elements hidden until needed */
+  .high-contrast
+    .invisible:not([class*='group']:hover > .invisible):not(
+      [class*='group']:hover .group-hover\:visible
+    ),
+  .high-contrast
+    .opacity-0:not([class*='group']:hover > .opacity-0):not(
+      [class*='group']:hover .group-hover\:opacity-100
+    ) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+  }
+
+  /* Only target tooltip trigger logic specifically */
+  .high-contrast [class*='group/tooltip']:hover .group-hover\/tooltip\:visible,
+  .high-contrast [class*='group/tooltip']:hover .group-hover\/tooltip\:opacity-100,
+  .high-contrast .group\/h:hover .group-hover\/h\:opacity-100,
+  .high-contrast .group:hover > .group-hover\:visible {
+    --hc-bg: black !important;
+    --hc-fg: white !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 100 !important;
+    border: 1px solid white !important;
+  }
+
+  /* Typography enhancements */
+  .high-contrast h1,
+  .high-contrast h2,
+  .high-contrast h3,
+  .high-contrast h4,
+  .high-contrast .font-bold,
+  .high-contrast .font-black,
+  .high-contrast .font-semibold {
+    font-weight: 800 !important;
+  }
+
+  .high-contrast a {
+    text-decoration: underline !important;
+    font-weight: 800 !important;
+  }
+
+  /* SVGs should inherit the current high-contrast text color */
+  .high-contrast svg {
+    color: inherit !important;
+    fill: currentColor !important;
+  }
+
+  .high-contrast svg path {
+    fill: currentColor !important;
+  }
+
+  /* Status badges (KALP etc) - keep them crisp but non-colored */
+  .high-contrast [class*='bg-red-'],
+  .high-contrast [class*='bg-orange-'],
+  .high-contrast [class*='bg-teal-'],
+  .high-contrast [class*='bg-emerald-'],
+  .high-contrast [class*='bg-amber-'] {
+    --hc-bg: white !important;
+    --hc-fg: black !important;
+    border: 1px solid black !important;
+  }
+
+  /* Instant feedback - no animations */
+  .high-contrast * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

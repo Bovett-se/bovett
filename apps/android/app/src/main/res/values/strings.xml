@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Bovett</string>
+    <string name="title_activity_main">Bovett</string>
+    <string name="package_name">se.bovett.app</string>
+    <string name="custom_url_scheme">se.bovett.app</string>
+</resources>

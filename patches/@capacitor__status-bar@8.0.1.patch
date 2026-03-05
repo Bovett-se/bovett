@@ -1,0 +1,54 @@
+diff --git a/android/src/main/java/com/capacitorjs/plugins/statusbar/StatusBar.java b/android/src/main/java/com/capacitorjs/plugins/statusbar/StatusBar.java
+index 480f0d450948364de01b5d25422a6eab0d4ca0d4..c0de8e71faceb2190d351698f220f4f24a50f7f1 100644
+--- a/android/src/main/java/com/capacitorjs/plugins/statusbar/StatusBar.java
++++ b/android/src/main/java/com/capacitorjs/plugins/statusbar/StatusBar.java
+@@ -29,7 +29,11 @@ public class StatusBar {
+     public StatusBar(AppCompatActivity activity, StatusBarConfig config, ChangeListener listener) {
+         // save initial color of the status bar
+         this.activity = activity;
+-        this.currentStatusBarColor = getStatusBarColorDeprecated();
++        if (shouldSetStatusBarColor(isEdgeToEdgeOptOutEnabled(activity.getWindow()))) {
++            this.currentStatusBarColor = getStatusBarColorDeprecated();
++        } else {
++            this.currentStatusBarColor = Color.TRANSPARENT;
++        }
+         this.listener = listener;
+         setBackgroundColor(config.getBackgroundColor());
+         setStyle(config.getStyle());
+@@ -106,14 +110,20 @@ public class StatusBar {
+             // Sets the layout to a fullscreen one that does not hide the actual status bar, so the WebView is displayed behind it.
+             uiOptions = uiOptions | getSystemUiFlagLayoutStableDeprecated() | getSystemUiFlagLayoutFullscreenDeprecated();
+             setSystemUiVisibilityDeprecated(decorView, uiOptions);
+-            currentStatusBarColor = getStatusBarColorDeprecated();
+-            setStatusBarColorDeprecated(Color.TRANSPARENT);
++            if (shouldSetStatusBarColor(isEdgeToEdgeOptOutEnabled(activity.getWindow()))) {
++                currentStatusBarColor = getStatusBarColorDeprecated();
++                setStatusBarColorDeprecated(Color.TRANSPARENT);
++            } else {
++                currentStatusBarColor = Color.TRANSPARENT;
++            }
+         } else {
+             // Sets the layout to a normal one that displays the WebView below the status bar.
+             uiOptions = uiOptions & ~getSystemUiFlagLayoutStableDeprecated() & ~getSystemUiFlagLayoutFullscreenDeprecated();
+             setSystemUiVisibilityDeprecated(decorView, uiOptions);
+             // recover the previous color of the status bar
+-            setStatusBarColorDeprecated(currentStatusBarColor);
++            if (shouldSetStatusBarColor(isEdgeToEdgeOptOutEnabled(activity.getWindow()))) {
++                setStatusBarColorDeprecated(currentStatusBarColor);
++            }
+         }
+         listener.onChange(statusBarOverlayChanged, getInfo());
+     }
+@@ -156,7 +166,11 @@ public class StatusBar {
+         info.setStyle(getStyle());
+         info.setOverlays(getIsOverlaid());
+         info.setVisible(isVisible);
+-        info.setColor(String.format("#%06X", (0xFFFFFF & getStatusBarColorDeprecated())));
++        if (shouldSetStatusBarColor(isEdgeToEdgeOptOutEnabled(window))) {
++            info.setColor(String.format("#%06X", (0xFFFFFF & getStatusBarColorDeprecated())));
++        } else {
++            info.setColor(String.format("#%06X", (0xFFFFFF & Color.TRANSPARENT)));
++        }
+         info.setHeight(getStatusBarHeight());
+         return info;
+     }
